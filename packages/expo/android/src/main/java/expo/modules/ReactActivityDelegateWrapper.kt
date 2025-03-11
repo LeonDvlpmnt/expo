@@ -204,7 +204,11 @@ class ReactActivityDelegateWrapper(
     reactActivityLifecycleListeners.forEach { listener ->
       listener.onPause(activity)
     }
-    return invokeDelegateMethod("onPause")
+    
+    // Ensure the React context is not null before calling onPause
+    if (delegate.reactInstanceManager.currentReactContext != null) {
+      return invokeDelegateMethod("onPause")
+    }
   }
 
   override fun onUserLeaveHint() {
